@@ -1,6 +1,7 @@
 from rbtree import RedBlackTree
 import heapq
 from ride import Ride
+from minheap import MinHeap
 
 # init
 bst = RedBlackTree()
