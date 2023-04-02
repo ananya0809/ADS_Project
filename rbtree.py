@@ -4,6 +4,7 @@
 import sys
 from typing import TypeVar
 
+from ride import Ride
 
 T = TypeVar('T', bound='Node')
 
@@ -12,10 +13,10 @@ T = TypeVar('T', bound='Node')
 class Node():
     next_id = 0
 
-    def __init__(self: T, item: int) -> None:
+    def __init__(self: T, ride: int) -> None:
         self.id = Node.next_id
         Node.next_id += 1
-        self.item = item
+        self.ride = ride
         self.parent = None
         self.left = None
         self.right = None
@@ -26,7 +27,7 @@ class Node():
         return self.id == other.id
 
     def __repr__(self: T) -> str:
-        return "ID: " + str(self.id) + " Value: " + str(self.item)
+        return "ID: " + str(self.id) + " Value: " + str(self.ride)
 
     def get_color(self: T) -> str:
         return "black" if self.color == 0 else "red"
@@ -66,7 +67,7 @@ class RedBlackTree():
     # Preorder
     def pre_order_helper(self: T, node: Node) -> None:
         if not node.is_null():
-            sys.stdout.write(str(node.item) + " ")
+            sys.stdout.write(str(node.ride.rideNumber) + " ")
             self.pre_order_helper(node.left)
             self.pre_order_helper(node.right)
 
@@ -74,7 +75,7 @@ class RedBlackTree():
     def in_order_helper(self: T, node: Node) -> None:
         if not node.is_null():
             self.in_order_helper(node.left)
-            sys.stdout.write(str(node.item) + " ")
+            sys.stdout.write(str(node.ride.rideNumber) + " ")
             self.in_order_helper(node.right)
 
     # Postorder
@@ -82,14 +83,14 @@ class RedBlackTree():
         if not node.is_null():
             self.post_order_helper(node.left)
             self.post_order_helper(node.right)
-            sys.stdout.write(str(node.item) + " ")
+            sys.stdout.write(str(node.ride.rideNumber) + " ")
 
     # Search the tree
     def search_tree_helper(self: T, node: Node, key: int) -> Node:
-        if node.is_null() or key == node.item:
+        if node.is_null() or key == node.ride.rideNumber:
             return node
 
-        if key < node.item:
+        if key < node.ride.rideNumber:
             return self.search_tree_helper(node.left, key)
         return self.search_tree_helper(node.right, key)
 
@@ -157,10 +158,10 @@ class RedBlackTree():
     def delete_node_helper(self: T, node: Node, key: int) -> None:
         z = self.TNULL
         while not node.is_null():
-            if node.item == key:
+            if node.ride.rideNumber == key:
                 z = node
 
-            if node.item <= key:
+            if node.ride.rideNumber <= key:
                 node = node.right
             else:
                 node = node.left
@@ -247,7 +248,7 @@ class RedBlackTree():
                 indent += "|    "
 
             s_color = "RED" if node.is_red() else "BLACK"
-            print(str(node.item) + "(" + s_color + ")")
+            print(str(node.ride.rideNumber) + "(" + s_color + ")")
             self.__print_helper(node.left, indent, False)
             self.__print_helper(node.right, indent, True)
 
@@ -334,10 +335,10 @@ class RedBlackTree():
         y.right = x
         x.parent = y
 
-    def insert(self: T, key: int) -> None:
-        node = Node(key)
+    def insert(self: T, Ride) -> None:
+        node = Node(ride)
         node.parent = None
-        node.item = key
+        node.ride.rideNumber = key
         node.left = self.TNULL
         node.right = self.TNULL
         node.set_color("red")
@@ -347,7 +348,7 @@ class RedBlackTree():
 
         while not x.is_null():
             y = x
-            if node.item < x.item:
+            if node.ride.rideNumber < x.ride.rideNumber:
                 x = x.left
             else:
                 x = x.right
@@ -355,7 +356,7 @@ class RedBlackTree():
         node.parent = y
         if y is None:
             self.root = node
-        elif node.item < y.item:
+        elif node.ride.rideNumber < y.ride.rideNumber:
             y.left = node
         else:
             y.right = node
@@ -374,8 +375,8 @@ class RedBlackTree():
     def get_root(self: T) -> Node:
         return self.root
 
-    def delete(self: T, item: int) -> None:
-        self.delete_node_helper(self.root, item)
+    def delete(self: T, ride.rideNumber: int) -> None:
+        self.delete_node_helper(self.root, ride.rideNumber)
 
     def print_tree(self: T) -> None:
         self.__print_helper(self.root, "", True)
