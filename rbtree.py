@@ -335,10 +335,10 @@ class RedBlackTree():
         y.right = x
         x.parent = y
 
-    def insert(self: T, Ride) -> None:
-        node = Node(ride)
+    def insert(self: T, ride: Ride) -> None:
+        node= Node(ride)
         node.parent = None
-        node.ride.rideNumber = key
+        node.ride = ride
         node.left = self.TNULL
         node.right = self.TNULL
         node.set_color("red")
@@ -375,7 +375,7 @@ class RedBlackTree():
     def get_root(self: T) -> Node:
         return self.root
 
-    def delete(self: T, ride.rideNumber: int) -> None:
+    def delete(self: T, ride: Ride) -> None:
         self.delete_node_helper(self.root, ride.rideNumber)
 
     def print_tree(self: T) -> None:
