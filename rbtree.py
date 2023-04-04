@@ -3,7 +3,7 @@
 
 import sys
 from typing import TypeVar
-
+from rbt_minheap import DictPair
 from ride import Ride
 
 T = TypeVar('T', bound='Node')
@@ -57,12 +57,13 @@ T = TypeVar('T', bound='RedBlackTree')
 
 
 class RedBlackTree():
-    def __init__(self: T) -> None:
-        self.TNULL = Node(0)
+    def __init__(self: T, dictionary: DictPair) -> None:
+        self.TNULL = Node(Ride(-1, -1, -1))
         self.TNULL.id = -1
         self.TNULL.set_color("black")
         self.root = self.TNULL
         self.size = 0
+        self.dictionary = dictionary
 
     # Preorder
     def pre_order_helper(self: T, node: Node) -> None:
@@ -199,7 +200,7 @@ class RedBlackTree():
             self.delete_fix(x)
 
         self.size -= 1
-
+        
     # Balance the tree after insertion
     def fix_insert(self: T, k: Node) -> None:
         while k.parent.is_red():
@@ -235,6 +236,9 @@ class RedBlackTree():
             if k == self.root:
                 break
         self.root.set_color("black")
+        ride_pointer = self.dictionary.get(k.ride.rideNumber)
+        result = self.search(k.ride.rideNumber)
+        self.dictionary.put(k.ride.rideNumber, result.id, ride_pointer[1])
 
     # Printing the tree
     def __print_helper(self: T, node: Node, indent: str, last: bool) -> None:
@@ -363,6 +367,10 @@ class RedBlackTree():
 
         self.size += 1
 
+        ride_pointer = self.dictionary.get(ride.rideNumber)
+        result = self.search(ride.rideNumber)
+        self.dictionary.put(ride.rideNumber, result.id, ride_pointer[1])
+
         if node.parent is None:
             node.set_color("black")
             return
@@ -371,12 +379,16 @@ class RedBlackTree():
             return
 
         self.fix_insert(node)
+        
+
 
     def get_root(self: T) -> Node:
         return self.root
 
     def delete(self: T, ride: Ride) -> None:
         self.delete_node_helper(self.root, ride.rideNumber)
+        ride_pointer = self.dictionary.get(ride.rideNumber)
+        self.dictionary.put(ride.rideNumber, -1, ride_pointer[1])
 
     def print_tree(self: T) -> None:
         self.__print_helper(self.root, "", True)
