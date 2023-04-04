@@ -2,15 +2,17 @@
 
 import sys
 from ride import Ride
+from rbt_minheap import DictPair
 
 
 class MinHeap:
-    def __init__(self, maxsize):
+    def __init__(self, maxsize, dictionary: DictPair):
         self.maxsize = maxsize
         self.size = 0
         self.Heap = [Ride(0, 0, 0)] * (self.maxsize + 1)
         self.Heap[0] = Ride(0, -1 * sys.maxsize, 0)
         self.FRONT = 1
+        self.dictionary = dictionary
 
     # Function to return the position of
     # parent for the node currently
@@ -77,6 +79,9 @@ class MinHeap:
         while self.Heap[current].rideCost < self.Heap[self.parent(current)].rideCost:
             self.swap(current, self.parent(current))
             current = self.parent(current)
+        ride_pointer = self.dictionary.get(ride.rideNumber)
+        result = self.Search(ride.rideCost)
+        self.dictionary.put(ride.rideNumber, ride_pointer[0], result)
 
     # Function to print the contents of the heap
     def Print(self):
@@ -100,6 +105,8 @@ class MinHeap:
     # element from the heap
     def remove(self):
         popped = self.Heap[self.FRONT]
+        ride_pointer = self.dictionary.get(popped.rideNumber)
+        self.dictionary.put(popped.rideNumber, ride_pointer[0], -1)
         self.Heap[self.FRONT] = self.Heap[self.size]
         self.size -= 1
         self.minHeapify(self.FRONT)
@@ -114,24 +121,24 @@ class MinHeap:
                 return 2 * i
             elif self.Heap[2 * i + 1] == ride:
                 return 2 * i + 1
-        return None
+        return -1
 
 
 # Driver Code
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    print("The minHeap is ")
-    minHeap = MinHeap(15)
-    minHeap.insert(Ride(0, 15, 0))
-    minHeap.insert(Ride(0, 10, 0))
-    minHeap.insert(Ride(0, 17, 0))
-    minHeap.insert(Ride(0, 10, 0))
-    minHeap.insert(Ride(0, 84, 0))
-    minHeap.insert(Ride(0, 19, 0))
-    minHeap.insert(Ride(0, 6, 0))
-    minHeap.insert(Ride(0, 22, 0))
-    minHeap.insert(Ride(0, 9, 0))
-    minHeap.minHeap()
+#     print("The minHeap is ")
+#     minHeap = MinHeap(15)
+#     minHeap.insert(Ride(0, 15, 0))
+#     minHeap.insert(Ride(0, 10, 0))
+#     minHeap.insert(Ride(0, 17, 0))
+#     minHeap.insert(Ride(0, 10, 0))
+#     minHeap.insert(Ride(0, 84, 0))
+#     minHeap.insert(Ride(0, 19, 0))
+#     minHeap.insert(Ride(0, 6, 0))
+#     minHeap.insert(Ride(0, 22, 0))
+#     minHeap.insert(Ride(0, 9, 0))
+#     minHeap.minHeap()
 
-    minHeap.Print()
-    print("The Min val is " + str(minHeap.remove().rideCost))
+#     minHeap.Print()
+#     print("The Min val is " + str(minHeap.remove().rideCost))
