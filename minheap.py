@@ -66,6 +66,9 @@ class MinHeap:
                 else:
                     self.swap(pos, self.rightChild(pos))
                     self.minHeapify(self.rightChild(pos))
+        ride_pointer = self.dictionary.get(self.Heap[pos].rideNumber)
+        result = self.Search(self.Heap[pos])
+        self.dictionary.put(self.Heap[pos].rideNumber, ride_pointer[0], result)
 
     # Function to insert a node into the heap
     def insert(self, ride: Ride):
@@ -80,7 +83,7 @@ class MinHeap:
             self.swap(current, self.parent(current))
             current = self.parent(current)
         ride_pointer = self.dictionary.get(ride.rideNumber)
-        result = self.Search(ride.rideCost)
+        result = self.Search(ride)
         self.dictionary.put(ride.rideNumber, ride_pointer[0], result)
 
     # Function to print the contents of the heap
@@ -114,6 +117,8 @@ class MinHeap:
 
     #  Function to search a ride in Heap
     def Search(self, ride):
+        if self.size == 1 and self.Heap[1] == ride:
+            return 1
         for i in range(1, (self.size // 2) + 1):
             if self.Heap[i] == ride:
                 return i
