@@ -107,12 +107,18 @@ class MinHeap:
     # Function to remove and return the minimum
     # element from the heap
     def remove(self):
+        if self.size == 0:
+            return Ride(0, 0, 0)
         popped = self.Heap[self.FRONT]
         ride_pointer = self.dictionary.get(popped.rideNumber)
         self.dictionary.put(popped.rideNumber, ride_pointer[0], -1)
         self.Heap[self.FRONT] = self.Heap[self.size]
         self.size -= 1
         self.minHeapify(self.FRONT)
+        if self.size == 0:
+            self.Heap = [Ride(0, 0, 0)] * (self.maxsize + 1)
+            self.Heap[0] = Ride(0, -1 * sys.maxsize, 0)
+            self.FRONT = 1
         return popped
 
     #  Function to search a ride in Heap

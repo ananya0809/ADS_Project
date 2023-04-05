@@ -32,6 +32,7 @@ def print_ride1_ride2(rideNumber1, rideNumber2):
 def insert_ride(rideNumber, rideCost, tripDuration):
     rbt.insert(Ride(rideNumber, rideCost, tripDuration))
     minhp.insert(Ride(rideNumber, rideCost, tripDuration))
+    print(minhp.size)
 
 # Operation 4
 def GetNextRide():
@@ -77,7 +78,13 @@ minhp = MinHeap(100, dictionary)
 # File Handling between Input and Output file
 operations = FileHandler().parseFile()
 
-print(operations)
+# print(operations)
+
+for operation in operations:
+    if operation[0] == OperationType.INSERT:
+        insert_ride(operation[1], operation[2], operation[3])
+    if operation[0] == OperationType.GETNEXTRIDE:
+        print(GetNextRide().to_str())
 
 # print(print_ridenum(9).ride.to_str())
 # print_ride1_ride2(4, 31)
