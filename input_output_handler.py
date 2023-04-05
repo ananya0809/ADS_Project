@@ -3,7 +3,7 @@ from enum import Enum
 class FileHandler:
 
     def __init__(self):
-        self.input = open("input.txt", "r")
+        self.input = open("input_new.txt", "r")
         self.output = open("output.txt", "w+")
 
     def parseParam(self, line: str):
@@ -11,19 +11,23 @@ class FileHandler:
         closebracket = line.index(")")
         parameter = line[openbracket+1:closebracket]
         if len(parameter) != 0:
-            return parameter.split(",")
+            return [eval(i) for i in parameter.split(",")] 
         else:
             return []
 
     def parseLine(self, line: str):
         if line.startswith("Insert"):
-            print(self.parseParam(line))
+            return [OperationType.INSERT] + self.parseParam(line)
+        if line.startswith("GetNextRide"):
+            return [OperationType.GETNEXTRIDE]
 
     def parseFile(self):
         inputLines = self.input.readlines()
+        parseLines = []
 
         for eachLine in inputLines:
-            self.parseLine(eachLine)
+            parseLines.append(self.parseLine(eachLine))
+        return parseLines
 
 
 class OperationType(Enum):
